@@ -27,6 +27,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
 }
 
 body {
@@ -814,60 +820,93 @@ body {
 }
 
 /* Responsive Design */
+
+/* Tablet */
 @media (max-width: 900px) {
   .container {
     grid-template-columns: 1fr;
     padding: 15px;
+    gap: 15px;
   }
 
   .sidebar {
     flex-direction: row;
     flex-wrap: wrap;
+    order: -1;
   }
 
-  .score-card,
-  .leaderboard-card {
+  .score-card {
     flex: 1;
+    min-width: 150px;
+  }
+
+  .leaderboard-card {
+    flex: 2;
     min-width: 200px;
+  }
+
+  .leaderboard-list {
+    max-height: 150px;
   }
 
   .hint-card {
     width: 100%;
   }
+
+  .list-header {
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
 }
 
+/* Mobile */
 @media (max-width: 600px) {
+  body {
+    padding: 8px;
+  }
+
   .victorian-frame {
     border-width: 4px;
   }
 
   .corner-ornament {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
   }
 
   .corner-ornament::before {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     top: 3px;
     left: 3px;
   }
 
   .corner-ornament::after {
-    width: 10px;
-    height: 10px;
-    top: 7px;
-    left: 7px;
+    width: 8px;
+    height: 8px;
+    top: 6px;
+    left: 6px;
+  }
+
+  .container {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  /* Header mobile */
+  .header {
+    padding: 12px 10px;
   }
 
   .chef-section {
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
 
   .chef-portrait {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
   }
 
   .title-area {
@@ -875,42 +914,308 @@ body {
   }
 
   .title {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .dish-banner {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+
+  .dish-name {
+    font-size: 1rem;
+    display: block;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+
+  /* Shopping list mobile */
+  .list-header {
+    padding: 10px 12px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .list-title {
+    font-size: 1.1rem;
+  }
+
+  .list-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .list-paper {
+    padding: 12px 8px;
+    min-height: auto;
+  }
+
+  .list-paper::before {
+    left: 25px;
+  }
+
+  .wordle-grid {
+    margin-left: 15px;
+    gap: 6px;
+    padding: 8px 0;
+  }
+
+  .grid-row {
+    gap: 5px;
   }
 
   .grid-cell {
-    width: 48px;
-    height: 48px;
-    font-size: 1.5rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+    border-width: 2px;
+  }
+
+  .list-footer {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* Keyboard mobile */
+  .keyboard-container {
+    padding: 10px 5px;
+  }
+
+  .keyboard {
+    gap: 5px;
+  }
+
+  .keyboard-row {
+    gap: 4px;
   }
 
   .key {
-    min-width: 28px;
-    height: 45px;
-    font-size: 0.95rem;
+    min-width: 26px;
+    height: 42px;
+    font-size: 0.9rem;
+    padding: 0 2px;
   }
 
   .key.wide {
-    min-width: 55px;
-    font-size: 0.75rem;
+    min-width: 48px;
+    font-size: 0.7rem;
   }
 
+  /* Message area mobile */
+  .message-area {
+    padding: 10px 12px;
+  }
+
+  .message-text {
+    font-size: 0.95rem;
+  }
+
+  /* Controls mobile */
   .controls {
     flex-direction: column;
+    gap: 10px;
   }
 
   .btn {
     width: 100%;
     justify-content: center;
+    padding: 10px 20px;
+    font-size: 0.9rem;
   }
 
+  .hint-cost {
+    font-size: 0.75rem;
+  }
+
+  /* Sidebar mobile */
   .sidebar {
     flex-direction: column;
+    gap: 10px;
   }
 
   .score-card,
   .leaderboard-card {
     min-width: 100%;
+  }
+
+  .score-display {
+    padding: 12px;
+  }
+
+  .score-value {
+    font-size: 2rem;
+  }
+
+  .stat {
+    padding: 8px;
+  }
+
+  .stat-value {
+    font-size: 1.2rem;
+  }
+
+  .leaderboard-list {
+    max-height: 120px;
+    padding: 8px;
+  }
+
+  .leaderboard-item {
+    padding: 6px 8px;
+  }
+
+  .leaderboard-rank {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+    margin-right: 8px;
+  }
+
+  /* Footer mobile */
+  .footer {
+    padding: 10px;
+  }
+
+  .footer-text {
+    font-size: 0.8rem;
+  }
+
+  /* Modal mobile */
+  .modal-content {
+    padding: 20px 15px;
+    margin: 10px;
+    border-width: 4px;
+  }
+
+  .modal-header {
+    font-size: 1.4rem;
+  }
+
+  .modal-chef {
+    width: 70px;
+    height: 70px;
+  }
+
+  .modal-message {
+    font-size: 0.95rem;
+  }
+
+  .modal-score {
+    padding: 10px;
+  }
+
+  .modal-score-value {
+    font-size: 1.6rem;
+  }
+
+  .modal-word strong {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+  }
+
+  .btn-new-round {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}
+
+/* Extra small mobile (iPhone SE, etc) */
+@media (max-width: 375px) {
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .grid-cell {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+
+  .grid-row {
+    gap: 4px;
+  }
+
+  .key {
+    min-width: 23px;
+    height: 38px;
+    font-size: 0.8rem;
+  }
+
+  .key.wide {
+    min-width: 42px;
+    font-size: 0.65rem;
+  }
+
+  .wordle-grid {
+    margin-left: 10px;
+  }
+
+  .list-paper::before {
+    left: 18px;
+  }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  body {
+    padding: 5px;
+  }
+
+  .container {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .header {
+    padding: 8px;
+  }
+
+  .chef-section {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .chef-portrait {
+    width: 40px;
+    height: 40px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .dish-banner {
+    padding: 5px 12px;
+  }
+
+  .list-paper {
+    min-height: auto;
+    padding: 8px;
+  }
+
+  .grid-cell {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .keyboard-container {
+    padding: 6px;
+  }
+
+  .key {
+    height: 36px;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .footer {
+    display: none;
   }
 }
 
