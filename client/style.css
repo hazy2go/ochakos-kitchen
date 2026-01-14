@@ -895,9 +895,16 @@ html.is-mobile .corner-ornament {
 
 /* Mobile */
 @media (max-width: 768px) {
-  body {
+  * {
+    box-sizing: border-box !important;
+  }
+
+  html, body {
     padding: 0 !important;
     margin: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
   }
 
   .victorian-frame {
@@ -908,8 +915,9 @@ html.is-mobile .corner-ornament {
     flex-direction: column;
     min-height: 100vh;
     min-height: 100dvh;
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
   }
 
   .corner-ornament {
@@ -923,9 +931,9 @@ html.is-mobile .corner-ornament {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100%;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   /* Header mobile - compact */
@@ -1024,17 +1032,18 @@ html.is-mobile .corner-ornament {
 
   /* Keyboard mobile - CRITICAL: must fit screen */
   .keyboard-container {
-    padding: 6px 2px;
-    overflow: hidden;
+    padding: 4px 2px;
+    overflow: hidden !important;
     flex-shrink: 0;
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
   }
 
   .keyboard {
-    gap: 4px;
-    width: 100%;
-    max-width: 100%;
+    gap: 3px;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .keyboard-row {
@@ -1042,25 +1051,30 @@ html.is-mobile .corner-ornament {
     gap: 2px;
     flex-wrap: nowrap;
     justify-content: center;
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  /* Key sizing - ensure 10 keys fit with gaps */
+  /* Key sizing - 10 keys must fit in ~100vw minus padding */
   .key {
-    flex: 1 1 auto;
-    min-width: 26px;
-    max-width: 38px;
-    height: 38px;
-    font-size: 0.8rem;
-    padding: 0;
+    flex: 1 1 0;
+    min-width: 0 !important;
+    max-width: none !important;
+    width: calc((100vw - 30px) / 10) !important;
+    height: 36px;
+    font-size: 0.75rem;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   .key.wide {
-    flex: 1.5 1 auto;
-    min-width: 40px;
-    max-width: 55px;
-    font-size: 0.55rem;
+    flex: 1.5 1 0;
+    min-width: 0 !important;
+    max-width: none !important;
+    width: calc((100vw - 30px) / 7) !important;
+    font-size: 0.5rem;
   }
 
   /* Message area mobile */
@@ -1091,10 +1105,11 @@ html.is-mobile .corner-ornament {
   .btn-hint {
     flex: 0 0 auto;
     width: auto;
+    padding: 8px 12px !important;
   }
 
   .btn-hint .btn-text {
-    display: none;
+    display: none !important;
   }
 
   .btn-hint .btn-icon {
@@ -1105,6 +1120,7 @@ html.is-mobile .corner-ornament {
 
   .hint-cost {
     font-size: 0.65rem;
+    display: none !important;
   }
 
   /* Sidebar mobile - horizontal compact */
@@ -1114,16 +1130,23 @@ html.is-mobile .corner-ornament {
     gap: 6px;
     order: 1;
     flex-shrink: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
   }
 
   .score-card {
     flex: 1;
     min-width: 100px;
+    max-width: calc(50% - 3px);
+    overflow: hidden;
   }
 
   .leaderboard-card {
-    flex: 1.5;
-    min-width: 150px;
+    flex: 1;
+    min-width: 100px;
+    max-width: calc(50% - 3px);
+    overflow: hidden;
   }
 
   .hint-card {
@@ -1132,7 +1155,7 @@ html.is-mobile .corner-ornament {
 
   .card-header {
     padding: 5px 8px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   .score-display {
@@ -1140,47 +1163,54 @@ html.is-mobile .corner-ornament {
   }
 
   .score-value {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
   }
 
   .score-label {
-    font-size: 0.7rem;
-  }
-
-  .stat {
-    padding: 5px;
-  }
-
-  .stat-value {
-    font-size: 0.95rem;
-  }
-
-  .stat-label {
     font-size: 0.65rem;
   }
 
+  .stats-row {
+    display: flex;
+    width: 100%;
+  }
+
+  .stat {
+    flex: 1;
+    padding: 4px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 0.85rem;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+  }
+
   .leaderboard-list {
-    max-height: 70px;
+    max-height: 60px;
     padding: 4px;
   }
 
   .leaderboard-item {
-    padding: 3px 5px;
+    padding: 2px 4px;
   }
 
   .leaderboard-rank {
-    width: 18px;
-    height: 18px;
-    font-size: 0.65rem;
-    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+    font-size: 0.6rem;
+    margin-right: 4px;
   }
 
   .leaderboard-name {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   .leaderboard-score {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   /* Footer mobile */
