@@ -1,0 +1,20 @@
+{
+  "name": "ochakos-kitchen",
+  "version": "1.0.0",
+  "description": "A Victorian-themed ingredient guessing game (Wordle-style) Discord Activity",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "bot": "node bot/index.js"
+  },
+  "keywords": ["discord", "activity", "game", "wordle", "cooking"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discord/embedded-app-sdk": "^2.4.0",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.0.0",
+    "express": "^5.2.1"
+  }
+}
