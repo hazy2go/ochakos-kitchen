@@ -4,7 +4,7 @@ A Victorian-themed ingredient guessing game (Wordle-style) for Discord Activitie
 
 Help Chef Ochako find the secret ingredients for her famous fish dishes by guessing 5-letter words.
 
-![Chef Ochako](https://i.ibb.co/LFXKt1p/Gemini-Generated-Image-my3tyqmy3tyqmy3t.png)
+![Chef Ochako](assets/ochako.png)
 
 ---
 

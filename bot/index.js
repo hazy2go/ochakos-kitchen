@@ -55,7 +55,7 @@ client.on('interactionCreate', async interaction => {
       .setTitle('🍳 Ochako\'s Kitchen')
       .setDescription('*~ Victorian Fish Cookery ~*\n\nHelp Chef Ochako find the secret ingredients for her famous fish dishes!\n\n**How to play:**\n• Guess the 5-letter ingredient\n• 🟩 Green = Correct letter & position\n• 🟨 Yellow = Correct letter, wrong position\n• ⬛ Gray = Letter not in word\n• You have 6 guesses per round!')
       .setColor('#722F37')
-      .setThumbnail('https://i.ibb.co/LFXKt1p/Gemini-Generated-Image-my3tyqmy3tyqmy3t.png')
+      .setThumbnail('https://ochakos-kitchen-main.onrender.com/assets/ochako.png')
       .addFields(
         { name: '📝 Guesses', value: '6 per round', inline: true },
         { name: '💡 Hints', value: 'Available (-150 pts)', inline: true },
