@@ -1,23 +1,47 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
+
+// Data file path for persistent storage
+const DATA_FILE = path.join(__dirname, 'data', 'players.json');
 
 // Load environment variables
 require('dotenv').config();
 
 app.use(express.json());
 
+// Add CORS and security headers for Discord Activities
+app.use((req, res, next) => {
+  // Allow Discord to embed the app
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // Required for Discord Activities iframe embedding
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  next();
+});
+
 // Serve static files with proper MIME types
 app.use(express.static(path.join(__dirname, 'client'), {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.css')) {
-      res.setHeader('Content-Type', 'text/css');
+      res.setHeader('Content-Type', 'text/css; charset=utf-8');
     } else if (filePath.endsWith('.js')) {
-      res.setHeader('Content-Type', 'application/javascript');
+      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    } else if (filePath.endsWith('.html')) {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
     }
+    // Allow cross-origin resource sharing for assets
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
   }
 }));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/assets', express.static(path.join(__dirname, 'assets'), {
+  setHeaders: (res) => {
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  }
+}));
 
 // Discord OAuth configuration
 const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID;
@@ -61,15 +85,69 @@ const VALID_WORDS = [
   "CHOPS", "WHISK", "STIRR", "FOLDS", "KNEAD", "SHAPE", "FORMS", "PLATE", "SERVE"
 ];
 
-// Game state for all players
+// Persistent player data (saved to disk)
+let persistentData = {
+  players: {} // { odiscordId: { name, totalScore, gamesWon, totalGames } }
+};
+
+// Load persistent data from file
+function loadPersistentData() {
+  try {
+    // Ensure data directory exists
+    const dataDir = path.dirname(DATA_FILE);
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+
+    if (fs.existsSync(DATA_FILE)) {
+      const data = fs.readFileSync(DATA_FILE, 'utf8');
+      persistentData = JSON.parse(data);
+      console.log(`✅ Loaded ${Object.keys(persistentData.players).length} players from storage`);
+    } else {
+      savePersistentData(); // Create initial file
+      console.log('📁 Created new player data file');
+    }
+  } catch (error) {
+    console.error('Error loading persistent data:', error);
+  }
+}
+
+// Save persistent data to file
+function savePersistentData() {
+  try {
+    const dataDir = path.dirname(DATA_FILE);
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    fs.writeFileSync(DATA_FILE, JSON.stringify(persistentData, null, 2));
+  } catch (error) {
+    console.error('Error saving persistent data:', error);
+  }
+}
+
+// Update persistent player data (call after score changes)
+function updatePersistentPlayer(playerId, playerData) {
+  persistentData.players[playerId] = {
+    name: playerData.name,
+    totalScore: playerData.totalScore,
+    gamesWon: playerData.gamesWon,
+    totalGames: playerData.totalGames,
+    lastPlayed: Date.now()
+  };
+  savePersistentData();
+}
+
+// Load persistent data on startup
+loadPersistentData();
+
+// Game state for current session (round-specific data)
 let gameState = {
   currentDish: null,
   currentIngredientIndex: 0,
   targetWord: null,
   gameStartTime: null,
   roundNumber: 1,
-  players: {}, // { odiscordId: { name, guesses, hintsUsed, score, gamesWon, totalGames } }
-  globalLeaderboard: [], // Top players across all time
+  players: {}, // Session data: { odiscordId: { name, currentGuesses, currentHintsUsed, roundComplete, roundScore, totalScore, gamesWon, totalGames } }
   roundHistory: [] // History of completed rounds
 };
 
@@ -200,17 +278,20 @@ app.get('/api/config', (req, res) => {
 app.get('/api/wordle/state', (req, res) => {
   const { playerId } = req.query;
 
+  // Load persistent data for this player if it exists
+  const persistentPlayer = persistentData.players[playerId];
+
   let player = gameState.players[playerId];
   if (!player) {
     player = {
-      name: 'Guest',
+      name: persistentPlayer?.name || 'Guest',
       currentGuesses: [],
       currentHintsUsed: 0,
       roundComplete: false,
       roundScore: 0,
-      totalScore: 0,
-      gamesWon: 0,
-      totalGames: 0
+      totalScore: persistentPlayer?.totalScore || 0,
+      gamesWon: persistentPlayer?.gamesWon || 0,
+      totalGames: persistentPlayer?.totalGames || 0
     };
     if (playerId) {
       gameState.players[playerId] = player;
@@ -259,22 +340,26 @@ app.post('/api/wordle/guess', (req, res) => {
     });
   }
 
-  // Get or create player
+  // Get or create player (load persistent data if available)
+  const persistentPlayer = persistentData.players[playerId];
   if (!gameState.players[playerId]) {
     gameState.players[playerId] = {
-      name: playerName || 'Guest',
+      name: playerName || persistentPlayer?.name || 'Guest',
       currentGuesses: [],
       currentHintsUsed: 0,
       roundComplete: false,
       roundScore: 0,
-      totalScore: 0,
-      gamesWon: 0,
-      totalGames: 0
+      totalScore: persistentPlayer?.totalScore || 0,
+      gamesWon: persistentPlayer?.gamesWon || 0,
+      totalGames: persistentPlayer?.totalGames || 0
     };
   }
 
   const player = gameState.players[playerId];
-  player.name = playerName || player.name;
+  // Always update name if provided (Discord username)
+  if (playerName && playerName !== 'Guest' && playerName !== 'Local Chef') {
+    player.name = playerName;
+  }
 
   // Check if player already completed this round
   if (player.roundComplete) {
@@ -315,8 +400,8 @@ app.post('/api/wordle/guess', (req, res) => {
     player.totalGames++;
     player.roundComplete = true;
 
-    // Update global leaderboard
-    updateLeaderboard(playerId, player);
+    // Save to persistent storage
+    updatePersistentPlayer(playerId, player);
 
     return res.json({
       success: true,
@@ -333,6 +418,10 @@ app.post('/api/wordle/guess', (req, res) => {
   if (player.currentGuesses.length >= 6) {
     player.roundComplete = true;
     player.totalGames++;
+
+    // Save to persistent storage (loss)
+    updatePersistentPlayer(playerId, player);
+
     return res.json({
       success: true,
       correct: false,
@@ -382,9 +471,9 @@ app.post('/api/wordle/hint', (req, res) => {
   });
 });
 
-// Get leaderboard
+// Get leaderboard (from persistent storage)
 app.get('/api/wordle/leaderboard', (req, res) => {
-  const leaderboard = Object.entries(gameState.players)
+  const leaderboard = Object.entries(persistentData.players)
     .map(([id, player]) => ({
       id,
       name: player.name,
@@ -419,24 +508,6 @@ app.post('/api/wordle/new-round', (req, res) => {
   });
 });
 
-function updateLeaderboard(playerId, player) {
-  const existing = gameState.globalLeaderboard.findIndex(p => p.id === playerId);
-  const entry = {
-    id: playerId,
-    name: player.name,
-    totalScore: player.totalScore,
-    gamesWon: player.gamesWon
-  };
-
-  if (existing >= 0) {
-    gameState.globalLeaderboard[existing] = entry;
-  } else {
-    gameState.globalLeaderboard.push(entry);
-  }
-
-  gameState.globalLeaderboard.sort((a, b) => b.totalScore - a.totalScore);
-  gameState.globalLeaderboard = gameState.globalLeaderboard.slice(0, 100);
-}
 
 function getWinMessage(guesses) {
   const messages = {
