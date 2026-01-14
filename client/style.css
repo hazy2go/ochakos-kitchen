@@ -261,8 +261,10 @@ body {
   flex-direction: column;
   gap: 8px;
   align-items: center;
+  justify-content: center;
   padding: 10px 0;
   margin-left: 30px;
+  width: 100%;
 }
 
 .grid-row {
@@ -952,26 +954,29 @@ body {
   .list-paper {
     padding: 12px 8px;
     min-height: auto;
+    overflow-x: hidden;
   }
 
   .list-paper::before {
-    left: 25px;
+    display: none;
   }
 
   .wordle-grid {
-    margin-left: 15px;
+    margin-left: 0;
     gap: 6px;
     padding: 8px 0;
+    width: 100%;
   }
 
   .grid-row {
     gap: 5px;
+    justify-content: center;
   }
 
   .grid-cell {
-    width: 44px;
-    height: 44px;
-    font-size: 1.3rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1.4rem;
     border-width: 2px;
   }
 
@@ -1129,9 +1134,9 @@ body {
   }
 
   .grid-cell {
-    width: 38px;
-    height: 38px;
-    font-size: 1.1rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
   }
 
   .grid-row {
@@ -1139,22 +1144,18 @@ body {
   }
 
   .key {
-    min-width: 23px;
-    height: 38px;
-    font-size: 0.8rem;
+    min-width: 24px;
+    height: 40px;
+    font-size: 0.85rem;
   }
 
   .key.wide {
-    min-width: 42px;
-    font-size: 0.65rem;
+    min-width: 44px;
+    font-size: 0.7rem;
   }
 
   .wordle-grid {
-    margin-left: 10px;
-  }
-
-  .list-paper::before {
-    left: 18px;
+    margin-left: 0;
   }
 }
 

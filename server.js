@@ -6,7 +6,17 @@ const app = express();
 require('dotenv').config();
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'client')));
+
+// Serve static files with proper MIME types
+app.use(express.static(path.join(__dirname, 'client'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css');
+    } else if (filePath.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }
+}));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // Discord OAuth configuration
