@@ -1,6 +1,16 @@
 // Ochako's Kitchen - Ingredient Wordle Game
 // Discord Activity Client
 
+// Device detection
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  || window.innerWidth <= 600
+  || ('ontouchstart' in window && window.innerWidth <= 768);
+
+// Apply mobile class to body immediately
+if (isMobile) {
+  document.body.classList.add('is-mobile');
+}
+
 const KEYBOARD_LAYOUT = [
   ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
   ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
