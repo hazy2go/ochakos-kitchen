@@ -50,24 +50,28 @@ body {
   overflow-x: hidden;
 }
 
-/* Mobile-specific class added by JS */
-body.is-mobile {
-  padding: 0;
+/* Mobile-specific class added by JS (on html element) */
+html.is-mobile,
+html.is-mobile body {
+  padding: 0 !important;
+  margin: 0 !important;
   align-items: stretch;
+  overflow-x: hidden;
 }
 
-body.is-mobile .victorian-frame {
-  border-width: 0;
-  border-radius: 0;
-  box-shadow: none;
-  max-width: 100%;
+html.is-mobile .victorian-frame {
+  border-width: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  max-width: 100% !important;
+  width: 100% !important;
   min-height: 100%;
   min-height: 100vh;
   min-height: 100dvh;
 }
 
-body.is-mobile .corner-ornament {
-  display: none;
+html.is-mobile .corner-ornament {
+  display: none !important;
 }
 
 /* Victorian Frame */
@@ -890,38 +894,43 @@ body.is-mobile .corner-ornament {
 }
 
 /* Mobile */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   body {
-    padding: 0;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
   .victorian-frame {
-    border-width: 0;
-    border-radius: 0;
-    box-shadow: none;
+    border-width: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     min-height: 100dvh;
+    width: 100%;
+    max-width: 100%;
   }
 
   .corner-ornament {
-    display: none;
+    display: none !important;
   }
 
   .container {
-    padding: 8px;
-    gap: 8px;
+    padding: 6px;
+    gap: 6px;
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
   }
 
   /* Header mobile - compact */
   .header {
-    padding: 8px;
+    padding: 6px;
     flex-shrink: 0;
   }
 
@@ -931,13 +940,13 @@ body.is-mobile .corner-ornament {
 
   .chef-section {
     flex-direction: row;
-    gap: 10px;
-    margin-bottom: 8px;
+    gap: 8px;
+    margin-bottom: 6px;
   }
 
   .chef-portrait {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
   }
 
   .title-area {
@@ -945,43 +954,43 @@ body.is-mobile .corner-ornament {
   }
 
   .title {
-    font-size: 1.3rem;
-    letter-spacing: 1px;
+    font-size: 1.2rem;
+    letter-spacing: 0;
   }
 
   .subtitle {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   .dish-banner {
-    padding: 6px 12px;
-    font-size: 0.85rem;
+    padding: 5px 10px;
+    font-size: 0.8rem;
   }
 
   .dish-name {
-    font-size: 0.95rem;
-    margin-left: 5px;
+    font-size: 0.9rem;
+    margin-left: 4px;
   }
 
   /* Shopping list mobile */
   .list-header {
-    padding: 8px 10px;
+    padding: 6px 8px;
     flex-direction: row;
-    gap: 8px;
+    gap: 6px;
   }
 
   .list-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .list-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   .list-paper {
-    padding: 10px 5px;
+    padding: 8px 4px;
     min-height: auto;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
   .list-paper::before {
@@ -989,97 +998,99 @@ body.is-mobile .corner-ornament {
   }
 
   .wordle-grid {
-    margin-left: 0;
-    gap: 5px;
-    padding: 5px 0;
-    width: 100%;
+    margin: 0 auto;
+    gap: 4px;
+    padding: 4px 0;
+    width: auto;
     align-items: center;
   }
 
   .grid-row {
-    gap: 5px;
+    gap: 4px;
     justify-content: center;
-    width: 100%;
   }
 
   .grid-cell {
-    width: calc((100vw - 60px) / 5);
-    max-width: 52px;
-    height: calc((100vw - 60px) / 5);
-    max-height: 52px;
-    font-size: 1.3rem;
+    width: 46px;
+    height: 46px;
+    font-size: 1.2rem;
     border-width: 2px;
   }
 
   .list-footer {
-    padding: 6px 10px;
-    font-size: 0.75rem;
+    padding: 5px 8px;
+    font-size: 0.7rem;
   }
 
-  /* Keyboard mobile - full width */
+  /* Keyboard mobile - CRITICAL: must fit screen */
   .keyboard-container {
-    padding: 8px 4px;
-    overflow: visible;
+    padding: 6px 2px;
+    overflow: hidden;
     flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
   }
 
   .keyboard {
     gap: 4px;
     width: 100%;
+    max-width: 100%;
   }
 
   .keyboard-row {
-    gap: 3px;
+    display: flex;
+    gap: 2px;
     flex-wrap: nowrap;
     justify-content: center;
     width: 100%;
-    padding: 0 2px;
+    max-width: 100%;
   }
 
+  /* Key sizing - ensure 10 keys fit with gaps */
   .key {
-    min-width: 0;
-    width: calc((100vw - 40px) / 10);
-    max-width: 34px;
-    flex: 1;
-    height: 40px;
-    font-size: 0.85rem;
-    padding: 0 1px;
+    flex: 1 1 auto;
+    min-width: 26px;
+    max-width: 38px;
+    height: 38px;
+    font-size: 0.8rem;
+    padding: 0;
   }
 
   .key.wide {
-    min-width: 0;
-    width: calc((100vw - 40px) / 7);
-    max-width: 52px;
-    flex: 1.4;
-    font-size: 0.6rem;
+    flex: 1.5 1 auto;
+    min-width: 40px;
+    max-width: 55px;
+    font-size: 0.55rem;
   }
 
   /* Message area mobile */
   .message-area {
-    padding: 8px 10px;
+    padding: 6px 8px;
     flex-shrink: 0;
   }
 
   .message-text {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   /* Controls mobile */
   .controls {
     flex-direction: row;
-    gap: 8px;
+    gap: 6px;
     flex-shrink: 0;
+    padding: 0 2px;
   }
 
   .btn {
     flex: 1;
     justify-content: center;
-    padding: 10px 12px;
-    font-size: 0.85rem;
+    padding: 8px 10px;
+    font-size: 0.8rem;
   }
 
   .btn-hint {
-    flex: 0.8;
+    flex: 0 0 auto;
+    width: auto;
   }
 
   .btn-hint .btn-text {
@@ -1087,32 +1098,32 @@ body.is-mobile .corner-ornament {
   }
 
   .btn-hint .btn-icon {
-    width: 20px;
-    height: 20px;
-    font-size: 0.85rem;
+    width: 18px;
+    height: 18px;
+    font-size: 0.8rem;
   }
 
   .hint-cost {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 
   /* Sidebar mobile - horizontal compact */
   .sidebar {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     order: 1;
     flex-shrink: 0;
   }
 
   .score-card {
     flex: 1;
-    min-width: 120px;
+    min-width: 100px;
   }
 
   .leaderboard-card {
     flex: 1.5;
-    min-width: 180px;
+    min-width: 150px;
   }
 
   .hint-card {
@@ -1120,61 +1131,61 @@ body.is-mobile .corner-ornament {
   }
 
   .card-header {
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    padding: 5px 8px;
+    font-size: 0.8rem;
   }
 
   .score-display {
-    padding: 8px;
-  }
-
-  .score-value {
-    font-size: 1.6rem;
-  }
-
-  .score-label {
-    font-size: 0.75rem;
-  }
-
-  .stat {
     padding: 6px;
   }
 
-  .stat-value {
-    font-size: 1rem;
+  .score-value {
+    font-size: 1.4rem;
   }
 
-  .stat-label {
+  .score-label {
     font-size: 0.7rem;
   }
 
-  .leaderboard-list {
-    max-height: 80px;
+  .stat {
     padding: 5px;
   }
 
+  .stat-value {
+    font-size: 0.95rem;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+  }
+
+  .leaderboard-list {
+    max-height: 70px;
+    padding: 4px;
+  }
+
   .leaderboard-item {
-    padding: 4px 6px;
+    padding: 3px 5px;
   }
 
   .leaderboard-rank {
-    width: 20px;
-    height: 20px;
-    font-size: 0.7rem;
-    margin-right: 6px;
+    width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+    margin-right: 5px;
   }
 
   .leaderboard-name {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .leaderboard-score {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   /* Footer mobile */
   .footer {
-    padding: 8px;
+    padding: 6px;
     flex-shrink: 0;
   }
 
@@ -1183,86 +1194,82 @@ body.is-mobile .corner-ornament {
   }
 
   .footer-text {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 
   /* Modal mobile */
   .modal-content {
-    padding: 20px 15px;
-    margin: 10px;
-    border-width: 4px;
+    padding: 15px 12px;
+    margin: 8px;
+    border-width: 3px;
     max-height: 90vh;
     overflow-y: auto;
   }
 
   .modal-header {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
   }
 
   .modal-chef {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
   }
 
   .modal-message {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .modal-score {
-    padding: 10px;
+    padding: 8px;
   }
 
   .modal-score-value {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .modal-word strong {
-    font-size: 1.1rem;
-    letter-spacing: 3px;
+    font-size: 1rem;
+    letter-spacing: 2px;
   }
 
   .btn-new-round {
-    padding: 10px 20px;
-    font-size: 0.95rem;
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 }
 
 /* Extra small mobile (iPhone SE, etc) */
 @media (max-width: 375px) {
   .title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .chef-portrait {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
   }
 
   .grid-cell {
-    width: calc((100vw - 50px) / 5);
-    max-width: 45px;
-    height: calc((100vw - 50px) / 5);
-    max-height: 45px;
-    font-size: 1.1rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
   }
 
   .grid-row {
-    gap: 4px;
+    gap: 3px;
   }
 
   .key {
-    min-width: 0;
-    width: calc((100vw - 30px) / 10);
-    max-width: 30px;
-    height: 38px;
-    font-size: 0.75rem;
+    min-width: 22px;
+    max-width: 32px;
+    height: 36px;
+    font-size: 0.7rem;
   }
 
   .key.wide {
-    min-width: 0;
-    width: calc((100vw - 30px) / 7);
-    max-width: 45px;
-    font-size: 0.55rem;
+    min-width: 36px;
+    max-width: 48px;
+    font-size: 0.5rem;
   }
 
   .keyboard-row {

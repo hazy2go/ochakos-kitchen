@@ -11,16 +11,16 @@ require('dotenv').config();
 
 app.use(express.json());
 
-// Add CORS and security headers for Discord Activities
+// Add CORS headers for Discord Activities
 app.use((req, res, next) => {
   // Allow Discord to embed the app
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  // Use less restrictive headers to support Mac Discord app
-  // Some Discord clients have issues with strict COEP/COOP headers
-  res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none');
-  res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
   next();
 });
 
